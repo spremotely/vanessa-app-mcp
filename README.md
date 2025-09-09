@@ -40,15 +40,17 @@ npm run build
 
 ## Настройка
 
-1. Установите переменную окружения `VANESSA_AUTOMATION_PATH` с путем к исполняемому файлу Vanessa Automation:
+### Переменная окружения
+
+Установите переменную окружения `VANESSA_AUTOMATION_PATH` с путем к исполняемому файлу Vanessa Automation:
 ```bash
 export VANESSA_AUTOMATION_PATH="/path/to/vanessa-automation.exe"
 ```
 
-2. Добавьте сервер в конфигурацию Claude Desktop:
+### Claude Desktop
 
-### Windows
-Откройте файл `%APPDATA%\Claude\claude_desktop_config.json` и добавьте:
+#### Windows
+Откройте файл `%APPDATA%\Claude\claude_desktop_config.json`:
 
 ```json
 {
@@ -64,8 +66,8 @@ export VANESSA_AUTOMATION_PATH="/path/to/vanessa-automation.exe"
 }
 ```
 
-### macOS/Linux
-Откройте файл `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) или `~/.config/Claude/claude_desktop_config.json` (Linux) и добавьте:
+#### macOS/Linux
+Откройте файл `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) или `~/.config/Claude/claude_desktop_config.json` (Linux):
 
 ```json
 {
@@ -80,6 +82,113 @@ export VANESSA_AUTOMATION_PATH="/path/to/vanessa-automation.exe"
   }
 }
 ```
+
+### Cursor
+
+Добавьте в настройки Cursor (`.cursor/mcp_settings.json` в корне проекта или глобально в `~/.cursor/mcp_settings.json`):
+
+```json
+{
+  "mcpServers": {
+    "vanessa-automation": {
+      "command": "node",
+      "args": ["./vanessa-mcp/dist/index.js"],
+      "env": {
+        "VANESSA_AUTOMATION_PATH": "C:\\path\\to\\vanessa-automation.exe"
+      },
+      "enabled": true
+    }
+  }
+}
+```
+
+### Cherry Studio
+
+В Cherry Studio откройте Settings → MCP Servers и добавьте новый сервер:
+
+```json
+{
+  "name": "vanessa-automation",
+  "command": "node",
+  "args": ["C:\\path\\to\\vanessa-mcp\\dist\\index.js"],
+  "env": {
+    "VANESSA_AUTOMATION_PATH": "C:\\path\\to\\vanessa-automation.exe"
+  },
+  "autoStart": true
+}
+```
+
+Или через файл конфигурации `~/.cherry-studio/config.json`:
+
+```json
+{
+  "mcpServers": [
+    {
+      "name": "vanessa-automation",
+      "command": "node",
+      "args": ["C:\\path\\to\\vanessa-mcp\\dist\\index.js"],
+      "env": {
+        "VANESSA_AUTOMATION_PATH": "C:\\path\\to\\vanessa-automation.exe"
+      }
+    }
+  ]
+}
+```
+
+### Cline (VS Code Extension)
+
+Добавьте в настройки VS Code (settings.json):
+
+```json
+{
+  "cline.mcpServers": {
+    "vanessa-automation": {
+      "command": "node",
+      "args": ["${workspaceFolder}/vanessa-mcp/dist/index.js"],
+      "env": {
+        "VANESSA_AUTOMATION_PATH": "C:\\path\\to\\vanessa-automation.exe"
+      }
+    }
+  }
+}
+```
+
+Или через UI: 
+1. Откройте Command Palette (Ctrl+Shift+P)
+2. Выберите "Cline: Configure MCP Servers"
+3. Добавьте сервер с параметрами выше
+
+### Roo-Cline (VS Code Fork)
+
+Для Roo-Cline (форк Cline) настройка аналогична Cline. Добавьте в settings.json:
+
+```json
+{
+  "roo-cline.mcpServers": [
+    {
+      "name": "vanessa-automation",
+      "command": "node",
+      "args": ["${workspaceFolder}/vanessa-mcp/dist/index.js"],
+      "env": {
+        "VANESSA_AUTOMATION_PATH": "C:\\path\\to\\vanessa-automation.exe"
+      },
+      "enabled": true
+    }
+  ]
+}
+```
+
+Или через UI:
+1. Откройте настройки Roo-Cline в боковой панели
+2. Перейдите в раздел "MCP Servers"
+3. Нажмите "Add Server" и введите параметры
+
+### Важные замечания
+
+1. Замените `C:\\path\\to\\vanessa-mcp` на реальный путь к установленному MCP серверу
+2. Замените `C:\\path\\to\\vanessa-automation.exe` на путь к вашей установке Vanessa Automation
+3. Для macOS/Linux используйте соответствующие пути без расширения .exe
+4. После изменения конфигурации перезапустите IDE/редактор
 
 ## Использование
 
